@@ -8,7 +8,7 @@ export default function Navbar() {
           href="#hero"
           className="font-bold tracking-widest text-white hover:opacity-90 transition"
         >
-          📽 PALERMO
+          📽 Devansh
         </a>
 
         <ul className="hidden md:flex gap-6 text-sm uppercase tracking-wider text-gray-400">
