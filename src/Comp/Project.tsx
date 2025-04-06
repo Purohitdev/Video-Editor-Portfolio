@@ -1,6 +1,12 @@
 'use client';
 
+import { useEffect, useRef } from 'react';
 import Marquee from 'react-fast-marquee';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import Lenis from '@studio-freight/lenis';
+
+gsap.registerPlugin(ScrollTrigger);
 
 const projects = [
   {
@@ -36,91 +42,82 @@ const marqueeText = [
 ];
 
 export default function Projects() {
+  const cardsRef = useRef<(HTMLDivElement | null)[]>([]);
+
+  useEffect(() => {
+    const lenis = new Lenis({
+      duration: 1.2,
+      easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+    } as any); 
+
+    const raf = (time: number) => {
+      lenis.raf(time);
+      requestAnimationFrame(raf);
+    };
+
+    requestAnimationFrame(raf);
+
+    // Reveal + Parallax effect for each project card
+    cardsRef.current.forEach((card, i) => {
+      if (card) {
+        gsap.fromTo(
+          card,
+          { y: 100, opacity: 0 },
+          {
+            y: -40,
+            opacity: 1,
+            ease: 'power2.out',
+            scrollTrigger: {
+              trigger: card,
+              start: 'top 90%',
+              end: 'bottom top',
+              scrub: true,
+              toggleActions: 'play none none reverse',
+            },
+            delay: i * 0.1, // staggered delay
+          }
+        );
+      }
+    });
+
+    return () => {
+      lenis.destroy();
+      ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
+    };
+  }, []);
+
   return (
-    <section className="relative bg-[#141414] text-white py-32 px-6 md:px-24 font-mono overflow-hidden">
-      {/* Marquee Layer */}
-      <div className="absolute top-[30%] left-0 z-10 -rotate-6 w-screen">
-        <Marquee
-          gradient={false}
-          speed={60}
-          autoFill={true}
-          className="bg-white/10 py-3 backdrop-blur-sm"
+    <section id="projects" className="relative bg-[#141414] text-white py-32 px-6 md:px-24 font-mono overflow-hidden  pb-0">
+      {/* Marquee Layers */}
+      {[
+        { top: '30%', rotate: '-rotate-6', z: 'z-10', dir: 'left', speed: 60 },
+        { top: '35%', rotate: 'rotate-6', z: 'z-20', dir: 'right', speed: 40 },
+        { top: '70%', rotate: 'rotate-6', z: 'z-10', dir: 'right', speed: 40 },
+        { top: '75%', rotate: '-rotate-6', z: 'z-20', dir: 'left', speed: 60 },
+      ].map(({ top, rotate, z, dir, speed }, i) => (
+        <div
+          key={i}
+          className={`absolute top-[${top}] left-0 ${z} ${rotate} w-screen`}
         >
-          <div className="flex items-center gap-10 text-white tracking-wider text-[2rem] font-medium">
-            {marqueeText.map((word, idx) => (
-              <span key={`top-${idx}`} className="flex items-center gap-4">
-                {word} <span className="text-white/50">✦</span>
-              </span>
-            ))}
-          </div>
+          <Marquee
+            gradient={false}
+            speed={speed}
+            direction={dir as 'left' | 'right'}
+            autoFill={true}
+            className="bg-white/10 py-3 backdrop-blur-sm"
+          >
+            <div className="flex items-center gap-10 text-white tracking-wider text-[2rem] font-medium">
+              {marqueeText.map((word, idx) => (
+                <span key={`${i}-${idx}`} className="flex items-center gap-4">
+                  {word} <span className="text-white/50">✦</span>
+                </span>
+              ))}
+            </div>
+          </Marquee>
+        </div>
+      ))}
 
-          
-        </Marquee>
-
-        
-      </div>
-
-      <div className="absolute top-[35%] left-0 z-20 rotate-6 w-screen">
-        <Marquee
-          gradient={false}
-          speed={40}
-          direction="right"
-          autoFill={true}
-          className="bg-white/10 py-3 backdrop-blur-sm"
-        >
-          <div className="flex items-center gap-10 text-white tracking-wider text-[2rem] font-medium">
-            {marqueeText.map((word, idx) => (
-              <span key={`bottom-${idx}`} className="flex items-center gap-4">
-                {word} <span className="text-white/50">✦</span>
-              </span>
-            ))}
-          </div>
-        </Marquee>
-      </div>
-
-
-      <div className="absolute top-[70%] left-0 z-10 rotate-6 w-screen">
-        <Marquee
-          gradient={false}
-          speed={40}
-          direction="right"
-          autoFill={true}
-          className="bg-white/10 py-3 backdrop-blur-sm"
-        >
-          <div className="flex items-center gap-10 text-white tracking-wider text-[2rem] font-medium">
-            {marqueeText.map((word, idx) => (
-              <span key={`bottom-${idx}`} className="flex items-center gap-4">
-                {word} <span className="text-white/50">✦</span>
-              </span>
-            ))}
-          </div>
-        </Marquee>
-      </div>
-
-      <div className="absolute top-[75%] left-0 z-20 -rotate-6 w-screen">
-        <Marquee
-          gradient={false}
-          speed={60}
-          autoFill={true}
-          className="bg-white/10 py-3 backdrop-blur-sm"
-        >
-          <div className="flex items-center gap-10 text-white tracking-wider text-[2rem] font-medium">
-            {marqueeText.map((word, idx) => (
-              <span key={`top-${idx}`} className="flex items-center gap-4">
-                {word} <span className="text-white/50">✦</span>
-              </span>
-            ))}
-          </div>
-
-          
-        </Marquee>
-
-        
-      </div>
-
-      
-
-      {/* Content Layer */}
+      {/* Content */}
       <div className="relative z-10">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-12">
           <div>
@@ -132,9 +129,13 @@ export default function Projects() {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 ">
           {projects.map((project, index) => (
-            <div key={index} className="space-y-4">
+            <div
+              key={index}
+              ref={(el) => { cardsRef.current[index] = el; }}
+              className="space-y-4"
+              >
               <div className="w-full aspect-square bg-[#111] overflow-hidden rounded-md border border-gray-800">
                 <video
                   src={project.video}

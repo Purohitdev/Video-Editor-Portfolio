@@ -15,7 +15,7 @@ export default function Footer() {
       ];
 
   return (
-    <footer className="bg-[#0f0f0f] text-white px-6 md:px-24 py-20 font-sans">
+    <footer  id="contact" className="bg-[#0f0f0f] text-white px-6 md:px-24 py-20 font-sans">
       {/* Top: Heading */}
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-16">
         <div className="text-5xl md:text-7xl font-semibold leading-tight tracking-tight">
