@@ -13,25 +13,25 @@ const projects = [
     title: 'TheMotto',
     date: 'June 10, 2024',
     year: '2020',
-    video: '/themotto.mp4',
+    video: 'https://videos.pexels.com/video-files/8100345/8100345-uhd_1440_2732_25fps.mp4',
   },
   {
     title: 'Lovelace Studio',
     date: 'June 10, 2024',
     year: '2020',
-    video: '/lovelace.mp4',
+    video: 'https://videos.pexels.com/video-files/9032408/9032408-uhd_1440_2560_25fps.mp4',
   },
   {
     title: 'TheMotto',
     date: 'June 10, 2024',
     year: '2020',
-    video: '/themotto.mp4',
+    video: 'https://videos.pexels.com/video-files/7914927/7914927-hd_1080_1920_30fps.mp4',
   },
   {
     title: 'Lovelace Studio',
     date: 'June 10, 2024',
     year: '2020',
-    video: '/lovelace.mp4',
+    video: 'https://videos.pexels.com/video-files/2795742/2795742-uhd_1440_2560_25fps.mp4',
   },
 ];
 
