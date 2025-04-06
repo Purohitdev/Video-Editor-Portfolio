@@ -93,7 +93,7 @@ export default function Hero() {
       </div>
 
       {/* Video Section */}
-      <div ref={videoRef} className="mt-40 flex justify-center relative z-10">
+      <div ref={videoRef} className="mt-60 flex justify-center relative z-10 ">
         <div className="bg-gray-100 w-full max-w-full aspect-video flex items-center justify-center relative overflow-hidden">
           {boxDots.map((dot, index) => (
             <div
