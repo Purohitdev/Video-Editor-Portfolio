@@ -63,7 +63,7 @@ export default function Hero() {
   }));
 
   return (
-    <section id="Hero" className="relative bg-[#141414] text-white px-6 md:px-32 py-4 text-center overflow-hidden  h-[120vh]">
+    <section id="Hero" className="relative bg-[#141414] text-white px-6 md:px-32 py-4 text-center overflow-hidden ">
       {/* Background dots */}
       {backgroundDots.map((dot, index) => (
         <div
